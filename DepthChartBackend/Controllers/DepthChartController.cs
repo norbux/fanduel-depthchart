@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using DepthChart.Service;
-using System.Text.Json;
+using DepthChart.Exceptions;
 using DepthChart.Model;
 
 namespace DepthChart.Controllers
@@ -50,7 +50,16 @@ namespace DepthChart.Controllers
         public IActionResult AddPlayer(string positon, int number, string name, int? depth)
         {
             var player = new NFLPlayer(number, name);
-            _depthChartService.AddPlayerToDepthChart(positon, player, depth);
+
+            try
+            {
+                _depthChartService.AddPlayerToDepthChart(positon, player, depth);
+            }
+            catch (DepthOutOfRangeException ex)
+            {
+                return BadRequest($"The supplied position depth is incorrect: {ex.Message}");
+            }
+
             return Ok();
         }
     }

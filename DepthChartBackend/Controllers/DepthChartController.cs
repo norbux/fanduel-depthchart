@@ -10,9 +10,11 @@ namespace DepthChart.Controllers
     [ApiController]
     public class DepthChartController : ControllerBase
     {
+        private readonly ILogger _logger;
         private readonly INFLDepthChartService _depthChartService;
-        public DepthChartController(INFLDepthChartService depthChartService)
+        public DepthChartController(INFLDepthChartService depthChartService, ILogger<DepthChartController> logger)
         {
+            _logger = logger;
             _depthChartService = depthChartService;
             _depthChartService.Initialize();
         }

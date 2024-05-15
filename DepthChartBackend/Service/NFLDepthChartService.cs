@@ -5,7 +5,7 @@ using DepthChart.Exceptions;
 using System.Text.Json;
 using System.IO;
 
-namespace Service
+namespace DepthChart.Service
 {
     public class NFLDepthChartService : INFLDepthChartService
     {

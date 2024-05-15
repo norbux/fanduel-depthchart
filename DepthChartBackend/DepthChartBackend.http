@@ -1,0 +1,6 @@
+@DepthChartBackend_HostAddress = http://localhost:5094
+
+GET {{DepthChartBackend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

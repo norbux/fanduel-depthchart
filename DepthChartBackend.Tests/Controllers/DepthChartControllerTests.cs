@@ -4,16 +4,19 @@ using DepthChart.Controllers;
 using DepthChart.Model;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace DepthChartBackend.Tests.Controllers
 {
     public class DepthChartControllerTests
     {
+        private readonly ILogger<DepthChartController> _logger;
         private readonly INFLDepthChartService _depthChartService;
 
         public DepthChartControllerTests()
         {
             _depthChartService = A.Fake<INFLDepthChartService>();
+            _logger = A.Fake<ILogger<DepthChartController>>();
         }
 
         [Fact]
@@ -21,7 +24,7 @@ namespace DepthChartBackend.Tests.Controllers
         {
             NFLDepthChart returned = new NFLDepthChart(new NFLTeam("TB"));
             A.CallTo(() => _depthChartService.GetFullDepthChart()).Returns(returned);
-            var controller = new DepthChartController(_depthChartService);
+            var controller = new DepthChartController(_depthChartService, _logger);
 
             var result = controller.GetFullDepthChart();
 
@@ -34,7 +37,7 @@ namespace DepthChartBackend.Tests.Controllers
             var position = "QB";
             var player = new NFLPlayer(12, "Mike Evans");
             List<NFLPlayer> returned = new List<NFLPlayer>();
-            var controller = new DepthChartController(_depthChartService);
+            var controller = new DepthChartController(_depthChartService, _logger);
             A.CallTo(() => _depthChartService.GetBackups(position, player)).Returns(returned);
 
             var result = controller.GetBackups(position, 12, "Cameron Brate");
@@ -48,7 +51,7 @@ namespace DepthChartBackend.Tests.Controllers
             var position = "QB";
             var number = 12;
             var name = "Mike Evans";
-            var controller = new DepthChartController(_depthChartService);
+            var controller = new DepthChartController(_depthChartService, _logger);
 
             var result = controller.DeletePlayer(position, number, name);
 
@@ -63,7 +66,7 @@ namespace DepthChartBackend.Tests.Controllers
             var number = 12;
             var name = "Mike Evans";
             var depth = 2;
-            var controller = new DepthChartController(_depthChartService);
+            var controller = new DepthChartController(_depthChartService, _logger);
 
             var result = controller.AddPlayer(position, number, name, depth);
 

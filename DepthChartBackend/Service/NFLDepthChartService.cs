@@ -54,6 +54,13 @@ namespace Service
             // Check if position exists, if not, create it
             if (!_depthChart.Data.ContainsKey(position))
             {
+                // In case the supplied position is not a valid NFL position, return with no error or effect.
+                // This is unspecified behaviour but just adding this validation to avoid upstream exceptions.
+                if (!Enum.GetNames<NFLPosition>().Where(p => p == position).Any())
+                {
+                    return;
+                }
+
                 var pos = Enum.Parse<NFLPosition>(position);
                 _depthChart.Data.Add(position, new NFLPositionDepth());
             }

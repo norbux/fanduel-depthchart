@@ -25,7 +25,7 @@ namespace DepthChartBackend.Tests.Service
 
         [Fact]
         public void Should_Add_Player()
-        {   
+        {
             service.AddPlayerToDepthChart("LB", new NFLPlayer(1, "Joe Montana"), null);
             var result = service.GetFullDepthChart();
             var qb = result.Data.ContainsKey("QB");
@@ -42,16 +42,15 @@ namespace DepthChartBackend.Tests.Service
             {
                 File.Delete("./data.json");
             }
-            
+
             service.Initialize();
             var chart = service.GetFullDepthChart();
 
             _ = chart.Data.TryGetValue("QB", out NFLPositionDepth? listBefore);
             var countBefore = listBefore?.List.Count ?? 0;
+            _ = service.RemovePlayerFromDepthChart("QB", new NFLPlayer(15, "Donovan Smith"));
 
-            var playerRemoved = service.RemovePlayerFromDepthChart("QB", new NFLPlayer(15, "Donovan Smith"));
-
-            chart.Data.TryGetValue("QB", out NFLPositionDepth? listAfter);
+            _ = chart.Data.TryGetValue("QB", out NFLPositionDepth? listAfter);
             var countAfter = listAfter?.List.Count ?? 0;
 
             countBefore.Should().BeGreaterThan(countAfter);
